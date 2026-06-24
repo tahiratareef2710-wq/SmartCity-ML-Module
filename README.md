@@ -28,8 +28,14 @@ The system addresses five core urban challenges in an integrated simulation.
 
 ## 🚀 How to Run
 ```bash
-pip install -r requirements.txt
-python app.py
+1. Install dependencies:
+pip install flask scikit-learn numpy
+
+2. Run the server:
+python server.py
+
+3. Open your browser and go to:
+http://localhost:5000
 ```
 
 ## 📌 Course
