@@ -1,8 +1,8 @@
 # CityMind — An Urban Intelligence System
 
-An AI-powered smart city simulation system built for the AI2002 course at FAST-NUCES.
-CityMind helps city authorities make smarter, faster, and better-informed decisions
-using a combination of AI search, optimization, and machine learning techniques.
+CityMind is an AI-powered smart city simulation system that helps city authorities
+make smarter, faster, and better-informed decisions using a combination of AI search,
+optimization, and machine learning techniques.
 
 ## 👥 Team
 - Tahira Tareef
@@ -38,5 +38,4 @@ python server.py
 http://localhost:5000
 ```
 
-## 📌 Course
-AI2002 — Artificial Intelligence | FAST-NUCES
+
