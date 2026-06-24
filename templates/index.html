@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CityMind — Urban Intelligence System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/static/css/landing.css?v=20260509">
+  <link rel="stylesheet" href="/static/css/dashboard.css?v=20260509">
+</head>
+<body>
+
+  <!-- ============================================================
+       LANDING PAGE
+       The background image IS the complete design.
+       HTML only provides: canvas effects + two navigation buttons.
+       ============================================================ -->
+  <div id="landing-page">
+
+    <!-- Canvas overlay: network lines, nodes, particles, scan sweep -->
+    <canvas id="landing-canvas"></canvas>
+
+    <!-- Two navigation buttons only — everything else is in the image -->
+    <div class="landing-buttons">
+      <button class="cta-btn cta-btn-primary" id="btn-launch">
+        <span class="cta-accent">&#9507;</span>
+        Enter Command Center
+        <span class="cta-arrow">&#9654;</span>
+      </button>
+      <button class="cta-btn cta-btn-secondary" id="btn-overview">
+        View System Overview
+      </button>
+    </div>
+
+    <!-- About Modal -->
+    <div class="holo-modal-overlay" id="about-modal">
+      <div class="holo-modal">
+        <h3 class="modal-title">About CityMind</h3>
+        <div class="modal-divider"></div>
+        <div class="modal-body">
+          <p>AI2002 — Artificial Intelligence &ensp;|&ensp; Phase 2</p>
+          <p><strong>Challenge 1</strong> → CSP + AC-3 + Backtracking + MRV</p>
+          <p><strong>Challenge 2</strong> → Kruskal MST + Path Augmentation</p>
+          <p><strong>Challenge 3</strong> → Genetic Algorithm (ambulance placement)</p>
+          <p><strong>Challenge 4</strong> → A* Search (emergency routing)</p>
+          <p><strong>Challenge 5</strong> → K-Means + Decision Tree (crime prediction)</p>
+          <p style="margin-top:10px;opacity:0.4;">Shared CityGraph — single source of truth</p>
+        </div>
+        <button class="modal-close-btn" id="btn-about-close">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       DASHBOARD PAGE
+       ============================================================ -->
+  <div id="dashboard-page" style="display:none;">
+
+    <header class="top-bar" id="top-bar">
+      <div class="tb-left">
+        <span class="tb-logo">CITYMIND</span>
+        <span class="tb-divider"></span>
+        <span class="phase-dot" id="phase-dot"></span>
+        <span class="phase-label" id="phase-indicator">SYSTEM READY</span>
+      </div>
+      <div class="tb-center">
+        <span class="system-title">COMMAND CENTER &bull; BUILD TEST 2026-05-09</span>
+      </div>
+      <div class="tb-right">
+        <span class="tb-tick">STEP <span id="header-tick">00000</span></span>
+        <span class="tb-sep">|</span>
+        <span class="tb-status" id="status-badge">System Ready</span>
+        <span class="tb-sep">|</span>
+        <span class="tb-clock" id="header-clock">00:00:00</span>
+      </div>
+    </header>
+
+    <div class="progress-strip" id="progress-container" style="display:none;">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%;"></div>
+      </div>
+      <span class="progress-label" id="progress-label"></span>
+    </div>
+
+    <div class="dash-body">
+
+      <!-- ═══ LEFT: COMMAND PANEL ═══ -->
+      <aside class="cmd-panel" id="cmd-panel">
+        <div class="cmd-header">
+          <span class="cmd-hub-icon">&#9670;</span>
+          <span class="cmd-hub-state" id="hub-state">BOOT</span>
+        </div>
+
+        <div class="cmd-btn-list">
+          <button class="cmd-btn" data-action="c1">
+            <span class="cmd-btn-num">C1</span>
+            <span class="cmd-btn-label">Layout Plan</span>
+            <span class="cmd-btn-sub">CSP</span>
+          </button>
+          <button class="cmd-btn" data-action="c2">
+            <span class="cmd-btn-num">C2</span>
+            <span class="cmd-btn-label">Road Network</span>
+            <span class="cmd-btn-sub">MST</span>
+          </button>
+          <button class="cmd-btn" data-action="c3">
+            <span class="cmd-btn-num">C3</span>
+            <span class="cmd-btn-label">Ambulances</span>
+            <span class="cmd-btn-sub">GA</span>
+          </button>
+          <button class="cmd-btn" data-action="c5">
+            <span class="cmd-btn-num">C5</span>
+            <span class="cmd-btn-label">Crime Predict</span>
+            <span class="cmd-btn-sub">ML</span>
+          </button>
+        </div>
+
+        <div class="cmd-btn-list cmd-btn-list-secondary">
+          <button class="cmd-btn cmd-btn-sm" data-action="sim-tick">
+            <span class="cmd-btn-num">&#9654;</span>
+            <span class="cmd-btn-label">Run Step</span>
+          </button>
+        </div>
+
+        <!-- Footer actions -->
+        <div class="cmd-footer">
+          <button class="text-btn text-btn-reset" data-action="reset">&#8634; Reset</button>
+          <button class="text-btn text-btn-home" data-action="home">&#8617; Home</button>
+        </div>
+
+        <!-- Flood tool -->
+        <div class="flood-mini">
+          <span class="flood-mini-label">FLOOD TOOL</span>
+          <span class="flood-mini-hint">Click 2 adj. nodes</span>
+          <button class="text-btn text-btn-flood" data-action="flood-clear">&#9747; Clear Floods</button>
+        </div>
+
+        <!-- Node counts -->
+        <div class="node-counts-mini" id="node-counts"></div>
+      </aside>
+
+      <!-- ═══ CENTER: TACTICAL CITY MAP ═══ -->
+      <main class="map-panel" id="map-panel">
+        <div class="map-bezel" id="map-bezel">
+          <span class="bezel-bracket bracket-tl"></span>
+          <span class="bezel-bracket bracket-tr"></span>
+          <span class="bezel-bracket bracket-bl"></span>
+          <span class="bezel-bracket bracket-br"></span>
+          <canvas id="grid-canvas"></canvas>
+        </div>
+      </main>
+
+      <!-- ═══ RIGHT: INTELLIGENCE FEED ═══ -->
+      <aside class="intel-panel" id="intel-panel">
+        <div class="intel-header">
+          <span class="intel-title">&#9656; INTELLIGENCE FEED</span>
+          <div class="intel-divider"></div>
+        </div>
+        <div class="intel-log" id="event-log">
+          <p class="log-empty">Awaiting events…</p>
+        </div>
+        <div class="algo-info" id="algo-info">
+          <div class="intel-header">
+            <span class="intel-title">&#9656; CHALLENGES</span>
+            <div class="intel-divider"></div>
+          </div>
+          <div class="algo-list">
+            <div class="algo-row"><span class="algo-num">C1</span><span class="algo-desc">Layout Plan — CSP + AC-3 + Backtracking + MRV</span></div>
+            <div class="algo-row"><span class="algo-num">C2</span><span class="algo-desc">Road Network — Kruskal MST + Path Augmentation</span></div>
+            <div class="algo-row"><span class="algo-num">C3</span><span class="algo-desc">Ambulances — Genetic Algorithm</span></div>
+            <div class="algo-row"><span class="algo-num">C4</span><span class="algo-desc">A* Search — Emergency Routing</span></div>
+            <div class="algo-row"><span class="algo-num">C5</span><span class="algo-desc">Crime Predict — K-Means + Decision Tree</span></div>
+          </div>
+        </div>
+
+        <div class="node-intel" id="node-info" style="display:none;">
+          <div class="intel-header">
+            <span class="intel-title">&#9656; NODE INTEL</span>
+            <div class="intel-divider"></div>
+          </div>
+          <div class="node-intel-content" id="node-info-content"></div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="metrics-bar" id="metrics-bar">
+      <div class="metric-tile">
+        <span class="metric-label">Response Time</span>
+        <span class="metric-value" id="met-val-response">--</span>
+        <span class="metric-ring"><span class="metric-ring-fill" id="met-ring-response"></span></span>
+      </div>
+      <div class="metric-tile">
+        <span class="metric-label">Total Crimes</span>
+        <span class="metric-value" id="met-val-crimes">--</span>
+        <span class="metric-ring"><span class="metric-ring-fill" id="met-ring-crimes"></span></span>
+      </div>
+      <div class="metric-tile">
+        <span class="metric-label">Road Efficiency</span>
+        <span class="metric-value" id="met-val-efficiency">--</span>
+        <span class="metric-ring"><span class="metric-ring-fill" id="met-ring-efficiency"></span></span>
+      </div>
+      <div class="metric-tile">
+        <span class="metric-label">Units Deployed</span>
+        <span class="metric-value" id="met-val-units">--</span>
+        <span class="metric-ring"><span class="metric-ring-fill" id="met-ring-units"></span></span>
+      </div>
+      <div class="metric-tile">
+        <span class="metric-label">Coverage</span>
+        <span class="metric-value" id="met-val-coverage">--</span>
+        <span class="metric-ring"><span class="metric-ring-fill" id="met-ring-coverage"></span></span>
+      </div>
+      <div class="metric-tile">
+        <span class="metric-label">System Load</span>
+        <span class="metric-value" id="met-val-load">--</span>
+        <span class="metric-ring"><span class="metric-ring-fill" id="met-ring-load"></span></span>
+      </div>
+    </footer>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/static/js/api.js?v=20260509"></script>
+  <script src="/static/js/landing.js?v=20260509"></script>
+  <script src="/static/js/event_log.js?v=20260509"></script>
+  <script src="/static/js/grid_renderer.js?v=20260509"></script>
+  <script src="/static/js/controls.js?v=20260509"></script>
+  <script src="/static/js/dashboard.js?v=20260509"></script>
+
+</body>
+</html>

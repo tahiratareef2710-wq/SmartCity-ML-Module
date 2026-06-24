@@ -1,0 +1,390 @@
+/* ============================================================
+   landing.css — CityMind Cinematic Landing
+
+   The background image IS the complete design.
+   CSS only provides: image display, color grading,
+   button positioning, and modal styling.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Exo+2:wght@200;300;400;500;600;700&display=swap');
+
+/* ══════════════════════════════════════════════════════════
+   CUSTOM PROPERTIES
+   ══════════════════════════════════════════════════════════ */
+:root {
+  --ai-cyan: #00D9FF;
+  --text-primary: #E6F1FF;
+  --text-secondary: #94A3B8;
+  --text-dim: #5B6B85;
+
+  --font-logo: 'Orbitron', 'Exo 2', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Space Mono', monospace;
+  --font-ui: 'Rajdhani', 'Inter', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESET
+   ══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: #010510;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: default;
+  user-select: none;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BACKGROUND IMAGE — The complete visual design
+   ══════════════════════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: url('/static/img/city-bg.png') no-repeat center center;
+  background-size: cover;
+}
+
+/* Cinematic color grading overlay */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 75% 75% at 50% 50%, transparent 35%, rgba(1, 5, 16, 0.5) 100%),
+    linear-gradient(to bottom, rgba(1, 5, 16, 0.3) 0%, transparent 20%),
+    linear-gradient(to top, rgba(1, 5, 16, 0.5) 0%, transparent 18%);
+}
+
+/* ══════════════════════════════════════════════════════════
+   LANDING PAGE CONTAINER
+   ══════════════════════════════════════════════════════════ */
+#landing-page {
+  position: fixed; inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   CANVAS OVERLAY — Network lines, nodes, particles
+   ══════════════════════════════════════════════════════════ */
+#landing-canvas {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  display: block;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════
+   NAVIGATION BUTTONS — Only HTML elements on top of image
+   ══════════════════════════════════════════════════════════ */
+.landing-buttons {
+  position: fixed;
+  bottom: 16%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.cta-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 42px;
+  min-width: 390px;
+  background: rgba(0, 217, 255, 0.025);
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  color: var(--text-primary);
+  font-family: var(--font-logo);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  clip-path: polygon(
+    10px 0%, 100% 0%, 100% calc(100% - 10px),
+    calc(100% - 10px) 100%, 0% 100%, 0% 10px
+  );
+  outline: none;
+}
+
+.cta-btn::before {
+  content: '';
+  position: absolute; inset: -1px;
+  border: 1px solid rgba(0, 217, 255, 0.05);
+  clip-path: polygon(
+    10px 0%, 100% 0%, 100% calc(100% - 10px),
+    calc(100% - 10px) 100%, 0% 100%, 0% 10px
+  );
+  pointer-events: none;
+  transition: border-color 0.4s ease;
+}
+
+.cta-btn:hover {
+  background: rgba(0, 217, 255, 0.07);
+  border-color: rgba(0, 217, 255, 0.55);
+  color: #ffffff;
+  text-shadow:
+    0 0 10px rgba(0, 217, 255, 0.55),
+    0 0 30px rgba(0, 217, 255, 0.22);
+  box-shadow:
+    0 0 25px rgba(0, 217, 255, 0.14),
+    0 0 65px rgba(0, 217, 255, 0.05),
+    inset 0 0 25px rgba(0, 217, 255, 0.05);
+  transform: scale(1.02);
+}
+
+.cta-btn:hover::before {
+  border-color: rgba(0, 217, 255, 0.28);
+}
+
+.cta-btn:active {
+  background: rgba(0, 217, 255, 0.12);
+  transform: scale(0.99);
+  transition: all 0.1s ease;
+}
+
+/* Primary accent mark */
+.cta-accent {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--ai-cyan);
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.45);
+  line-height: 1;
+  margin-right: -6px;
+  transition: text-shadow 0.4s ease;
+}
+
+.cta-btn:hover .cta-accent {
+  text-shadow: 0 0 16px rgba(0, 217, 255, 0.75);
+}
+
+.cta-arrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ai-cyan);
+  opacity: 0.5;
+  margin-left: 4px;
+  transition: all 0.4s ease;
+}
+
+.cta-btn:hover .cta-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.55);
+}
+
+/* Secondary button */
+.cta-btn-secondary {
+  background: rgba(148, 163, 184, 0.015);
+  border-color: rgba(148, 163, 184, 0.12);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  padding: 12px 34px;
+  min-width: 340px;
+  color: var(--text-secondary);
+}
+
+.cta-btn-secondary:hover {
+  background: rgba(148, 163, 184, 0.04);
+  border-color: rgba(148, 163, 184, 0.3);
+  color: var(--text-primary);
+  text-shadow: 0 0 8px rgba(148, 163, 184, 0.35);
+  box-shadow: 0 0 18px rgba(148, 163, 184, 0.06);
+}
+
+/* ══════════════════════════════════════════════════════════
+   ABOUT MODAL
+   ══════════════════════════════════════════════════════════ */
+.holo-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(1, 5, 16, 0.9);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.holo-modal-overlay.visible {
+  display: flex;
+}
+
+.holo-modal {
+  background: rgba(4, 12, 28, 0.96);
+  border: 1px solid rgba(0, 217, 255, 0.18);
+  padding: 38px 46px;
+  max-width: 540px;
+  width: 92%;
+  position: relative;
+  clip-path: polygon(
+    14px 0%, 100% 0%, 100% calc(100% - 14px),
+    calc(100% - 14px) 100%, 0% 100%, 0% 14px
+  );
+  box-shadow:
+    0 0 50px rgba(0, 217, 255, 0.08),
+    0 0 120px rgba(0, 217, 255, 0.03);
+}
+
+.holo-modal::before {
+  content: '';
+  position: absolute; inset: 1px;
+  border: 1px solid rgba(0, 217, 255, 0.05);
+  clip-path: polygon(
+    14px 0%, 100% 0%, 100% calc(100% - 14px),
+    calc(100% - 14px) 100%, 0% 100%, 0% 14px
+  );
+  pointer-events: none;
+}
+
+.modal-title {
+  font-family: var(--font-logo);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--ai-cyan);
+  text-shadow: 0 0 12px rgba(0, 217, 255, 0.35);
+  margin-bottom: 4px;
+}
+
+.modal-divider {
+  width: 100%;
+  height: 1px;
+  margin: 14px 0 20px 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 217, 255, 0.22),
+    rgba(0, 217, 255, 0.04),
+    transparent
+  );
+}
+
+.modal-body {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 2.1;
+  color: var(--text-secondary);
+}
+
+.modal-body strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.modal-close-btn {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 9px 22px;
+  background: rgba(0, 217, 255, 0.03);
+  border: 1px solid rgba(0, 217, 255, 0.18);
+  color: var(--ai-cyan);
+  font-family: var(--font-logo);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  clip-path: polygon(6px 0%, 100% 0%, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0% 100%, 0% 6px);
+}
+
+.modal-close-btn:hover {
+  background: rgba(0, 217, 255, 0.1);
+  border-color: rgba(0, 217, 255, 0.45);
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.45);
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.1);
+}
+
+/* ══════════════════════════════════════════════════════════
+   TOAST
+   ══════════════════════════════════════════════════════════ */
+.toast-container {
+  position: fixed;
+  bottom: 52px; right: 28px;
+  display: flex; flex-direction: column; gap: 8px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-primary);
+  background: rgba(4, 12, 28, 0.92);
+  border: 1px solid rgba(0, 217, 255, 0.18);
+  padding: 10px 18px;
+  animation: toastIn 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+             toastOut 0.3s 2.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.toast.error {
+  border-color: rgba(236, 72, 153, 0.4);
+  color: #FCA5A5;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; }
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   PAGE TRANSITIONS
+   ══════════════════════════════════════════════════════════ */
+#landing-page.transitioning-out {
+  animation: page-out 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes page-out {
+  0%   { opacity: 1; filter: blur(0); }
+  100% { opacity: 0; filter: blur(8px); }
+}
+
+#dashboard-page.transitioning-in {
+  animation: page-in 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes page-in {
+  0%   { opacity: 0; filter: blur(6px); }
+  100% { opacity: 1; filter: blur(0); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .cta-btn {
+    min-width: 260px;
+    font-size: 11px;
+    padding: 12px 22px;
+  }
+
+  .cta-btn-secondary {
+    min-width: 220px;
+    font-size: 10px;
+  }
+
+  .landing-buttons {
+    bottom: 12%;
+    gap: 10px;
+  }
+}
